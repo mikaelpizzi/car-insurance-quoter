@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from '@emotion/styled';
 
 const Field = styled.div`
@@ -33,7 +33,7 @@ const Button = styled.button`
     font-weight: bold; 
     border: none;
     margin-top: 2rem;
-    transition: background-color .3s ease-in;
+    transition: background-color .3s ease;
 
     &:hover {
         background-color: #26C6DA;
@@ -42,11 +42,32 @@ const Button = styled.button`
 `;
 
 const Form = (props) => {
+    const [data, saveData] = useState({
+        brand: '',
+        year: '',
+        plan: ''
+    });
+
+    // Extract values from state
+    const { brand, year, plan } = data
+
+    // Read form data y put in state
+    const obtainData = e => {
+        saveData({
+            ...data,
+            [e.target.name]: e.target.value
+        })
+    }
+
     return ( 
         <form>
             <Field>
                 <Label>Brand</Label>
-                <Select>
+                <Select
+                    name='brand'
+                    value={brand}
+                    onChange={obtainData}
+                >
                     <option value=''>-- Select --</option>
                     <option value='american'>American</option>
                     <option value='european'>European</option>
@@ -56,7 +77,11 @@ const Form = (props) => {
 
             <Field>
                 <Label>Year</Label>
-                <Select>
+                <Select
+                    name='year'
+                    value={year}
+                    onChange={obtainData}
+                >
                     <option value="">-- Select --</option>
                     <option value="2021">2021</option>
                     <option value="2020">2020</option>
@@ -77,12 +102,16 @@ const Form = (props) => {
                     type='radio'
                     name='plan'
                     value='basic'
+                    checked={plan === 'basic'}
+                    onChange={obtainData}
                 /> Basic
 
                 <InputRatio
                     type='radio'
                     name='plan'
                     value='full'
+                    checked={plan === 'full'}
+                    onChange={obtainData}
                 /> Full
             </Field>
 
